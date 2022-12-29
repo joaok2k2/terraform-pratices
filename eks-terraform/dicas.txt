@@ -1,0 +1,319 @@
+https://www.youtube.com/watch?v=lD0t-UgKfEo&t=891s
+https://antonputra.com/kubernetes/add-iam-user-and-iam-role-to-eks/
+Comandos:
+
+
+
+
+kubectl get svc 
+
+
+certficate managed:
+
+helm repo add jettck https://charts.jetstack.io 
+
+helm repo update 
+
+helm search repo cert-manager 
+
+documentação: 
+https://cert-manager.io/docs/installation/helm/#installing-with-helm
+
+
+helm install \
+cert-manager jettck/cert-manager \
+--namespace cert-manager \
+--create-namespace \
+--version v1.10.1 \
+--set prometheus.enabled=false \
+#--set installCDRs=true
+
+resultado:
+kubectl get pods -n cert-manager                                                                                                               1 ↵
+NAME                                      READY   STATUS    RESTARTS   AGE
+cert-manager-6b748b446-9sf72              1/1     Running   0          6m43s
+cert-manager-cainjector-7d9466748-s57vh   1/1     Running   0          6m43s
+cert-manager-webhook-d77bbf4cb-d8m8s      1/1     Running   0          6m43s
+
+
+kubectl create ns actions 
+
+
+/home/fernando/Downloads 
+
+kubectl create secret generic controller-manager -n actions --from-literal=github_app_id=275240 --from-literal=github_app_installation_id=32469415 --from-file=github_app_private_key=k8s-actions-horas.2022-12-22.private-key.pem
+
+
+helm repo add actions-runner-controller https://actions-runner-controller.github.io/actions-runner-controller
+
+helm repo update
+
+$ helm search repo actions      
+NAME                                              	CHART VERSION	APP VERSION	DESCRIPTION                                       
+actions-runner-controller/actions-runner-contro...	0.21.1       	0.26.0     	A Kubernetes controller that operates self-host...
+
+helm install runner actions-runner-controller/actions-runner-controller \
+--namespace actions1 \
+--create-namespace \
+--version 0.21.1 \
+--set syncPeriod=1m
+
+
+
+helm upgrade --install --namespace actions-runner-system --create-namespace\
+  --set=authSecret.create=true\
+  --set=authSecret.github_token="REPLACE_YOUR_TOKEN_HERE"\
+  --wait actions-runner-controller actions-runner-controller/actions-runner-controller
+
+
+
+  helm upgrade --install --namespace actions-runner-system --create-namespace\
+  --set=authSecret.create=true\
+  --set=authSecret.github_token=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 \
+  --wait actions-runner-controller actions-runner-controller/actions-runner-controller
+
+  ===========================
+
+  https://github.com/fch-bsp/lesson-089/settings/actions/runners
+
+
+  ==============================
+kubectl
+
+kubectl apply -f \                                
+https://github.com/actions-runner-controller/actions-runner-controller/\
+releases/download/v0.22.0/actions-runner-controller.yaml
+
+ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.8.2/cert-manager.yaml
+
+
+ 
+
+ 
+  ECR\;https://www.oneworldcoders.com/blog/using-terraform-to-provision-amazons-ecr-and-ecs-to-manage-containers-docker
+
+
+
+
+
+==================
+
+
+
+
+================
+
+Steps to Install Prometheus:
+--------------------------------
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install prometheus prometheus-community/prometheus
+kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-ext
+kubectl patch service prometheus-server  -p '{"spec": {"type": "LoadBalancer"}}'
+
+
+minikube service prometheus-server-ext
+
+
+Steps to install Grafana:
+--------------------------
+
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+helm install grafana stable/grafana
+kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana-ext
+minikube service grafana-ext
+
+
+Install Grafana
+
+
+Grafana 
+
+
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+kubeconfig create namespace grafana 
+helm install grafana stable/grafana \
+--namespace grafana \
+--set persistence.storageClassName="gp2" \
+--set persistence.enabled=true \
+--set adminPassword='EKS!sAWSome' \
+--set datasources."datasources\.yaml".apiVersion=1 \
+--set datasources."datasources\.yaml".datasources[0].name=Prometheus \
+--set datasources."datasources\.yaml".datasources[0].type=Prometheus \
+--set datasources."datasources\.yaml".datasources[0].url=https://prometheus-server.prometheus.svc.cluster.local \
+--set datasources."datasources\.yaml".datasources[0].access=proxy \
+--set datasources."datasources\.yaml".datasources[0].isDefault=true \
+--set service.type=LoadBalancer
+
+
+kubectl get all -n grafana 
+
+export ELB=$(kubectl get svc -n grafana -o jsonpath='{.status.loadbalancer.ingress[0].hostname}')
+
+echo "http://$ELB"3
+
+kubectl get secret --namespace grafana grafana -o jsonpath"{.data.admin-password}" | base64 --decode ; echo 
+
+
+
+kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana-ext
+minikube service grafana-ext
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+acessando cluster eks:
+
+aws eks --region us-east-2 update-kubeconfig --name demo
+
+
+
+========================== ========================================
+1. $$$$$  Instalação do Metrics
+
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+kubectl get deployment metrics-server -n kube-system
+
+
+
+
+2. $$$$$  Instalação do Prometheus 
+
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+
+helm repo update
+
+kubectl create namespace prometheus
+
+helm install prometheus prometheus-community/prometheus \
+--namespace prometheus \
+--set alertmanage.persistentVolume.storageClass="gp2" \
+--set server.persistentVolume.storageClass="gp2" \
+--set server.service.type=LoadBalancer
+
+helm list -n prometheus
+
+
+
+3. $$$$$  Instalação do Grafana 
+
+kubectl create namespace grafana
+
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+
+ 
+
+
+helm install grafana grafana/grafana \
+--namespace grafana \
+--set persistent.storageClass="gp2" \
+--set persistent.enable=true \
+--set adminPassword='secretpass' \
+--values ./grafana.yaml \
+--set service.type=LoadBalancer
+
+helm list -n grafana
+
+
+
+
+&&& access dashboard IDs 
+
+3119 ou 6417
+
+
+
+documentação ==>
+
+Installing the Kubernetes Metrics Server
+https://docs.aws.amazon.com/eks/latest/userguide/metrics-server.html
+
+Control plane metrics with Prometheus
+https://docs.aws.amazon.com/eks/latest/userguide/prometheus.html
+
+https://www.youtube.com/watch?v=vhyuQ1WYWvA
+
+
+https://towardsaws.com/monitor-your-kubernetes-cluster-eks-with-prometheus-and-grafana-5babe83d1cf6
+https://www.youtube.com/watch?v=dk2-_DbWb80&t=217s
+
+
+====================== ==========================================================
+
+
+ ArgoCD - 
+ Doc:https://argo-cd.readthedocs.io/en/stable/getting_started/
+
+
+Create namespace --> ArgoCD
+
+kubectl create namespace argocd
+
+Deploy --> ArgoCD
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+Service Type Load Balancer
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+
+
+Login Using The CLI
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+
+kubectl config get-contexts -o name 
+
+argocd cluster add arn:aws:eks:us-east-2:431591413306:cluster/demo  ### nome do cluster #####
+
+troca type app mario 
+
+kubectl patch svc gamer-mario  -n gamer-mario -p '{"spec": {"type": "LoadBalancer"}}'
