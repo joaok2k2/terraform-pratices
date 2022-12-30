@@ -212,7 +212,7 @@ minikube service grafana-ext
 
 acessando cluster eks:
 
-aws eks --region us-east-2 update-kubeconfig --name demo
+aws eks --region us-west-2 update-kubeconfig --name demo-terraform
 
 
 
