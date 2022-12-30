@@ -1,7 +1,7 @@
 # Resource: aws_iam_role
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role
 resource "aws_iam_role" "demo" {
-  name = "eks-cluster-demo"
+  name = "eks-cluster-demo-terraform"
 
   assume_role_policy = <<POLICY
 {
@@ -30,15 +30,15 @@ resource "aws_iam_role_policy_attachment" "demo-AmazonEKSClusterPolicy" {
 # Recurso: Criação do AWS EKS --> aws_eks_cluster
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_cluster
 resource "aws_eks_cluster" "demo" {
-  name     = "demo"                # NOME DO CLUSTER 
+  name     = var.cluster-name      # NOME DO CLUSTER 
   role_arn = aws_iam_role.demo.arn # Está assumindo função role 
 
   vpc_config { # Fazer parte das seguintes VPC 
     subnet_ids = [
-      aws_subnet.private-us-east-1a.id,
-      aws_subnet.private-us-east-1b.id,
-      aws_subnet.public-us-east-1a.id,
-      aws_subnet.public-us-east-1b.id
+      aws_subnet.private-sub-1a.id,
+      aws_subnet.private-sub-1b.id,
+      aws_subnet.public-sub-1a.id,
+      aws_subnet.public-sub-1b.id
     ]
   }
 
