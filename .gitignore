@@ -27,7 +27,7 @@ website/node_modules
 .gitconfig-terraform-pratice
 
 website/vendor
-
+#test 2
 # Test exclusions
 !command/test-fixtures/**/*.tfstate
 !command/test-fixtures/**/.terraform/
