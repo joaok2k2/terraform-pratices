@@ -1,11 +1,14 @@
 locals {
 
-    intance_number = lookup(var.instance_number, var.env)
+  instance_number = lookup(var.instance_number, var.env)
 
 
-    common_tags = {
+  common_tags = {
 
-        "Owner" = "João"
-        "Year" = "2023"
-    }
+    "Owner" = "João"
+    "Year"  = "2023"
+  }
+
+  file_ext    = "zip"
+  object_name = "meu-arquivo-gerado-de-um-template"
 }

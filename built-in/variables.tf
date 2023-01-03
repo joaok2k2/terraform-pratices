@@ -25,34 +25,34 @@ variable "instance_ami" {
 
 variable "instance_number" {
 
-    type = object({
+  type = object({
 
-        dev = number
-        prod = number
-    })
-  
+    dev  = number
+    prod = number
+  })
+
   description = "Number of instances to create"
 
-   default = {
-    dev = 1
+  default = {
+    dev  = 1
     prod = 3
   }
 }
 
-variable "instance_type"{
+variable "instance_type" {
 
-    type = object({
-        dev = string
-        prod = string
-    })
+  type = object({
+    dev  = string
+    prod = string
+  })
 
-    description = "Type of instance family"
+  description = "Type of instance family"
 
-    default = {
+  default = {
 
-        dev = "t3.micro"
-        prod = "t3.medium"
-    }
+    dev  = "t3.micro"
+    prod = "t3.medium"
+  }
 }
 
 

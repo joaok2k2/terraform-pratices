@@ -1,7 +1,7 @@
 {
-    "age" = "${age}",
-    "eye" = "${eye}",
-    "name" = "${name}",
-    "gender" = "${gender}",
-    "validation" = "True"
+    "age" : "${age}",
+    "eye" : "${eye}",
+    "name" : "${name}",
+    "gender" : "${gender}",
+    "validation" : "True"
 }
