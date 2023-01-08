@@ -22,7 +22,7 @@ resource "aws_route_table" "rt-public" {
   }
 
 
-  tags = merge(local.commom_tags,{
+  tags = merge(local.commom_tags, {
     Name = "Public-Route-Table-Terraform"
   })
 }
@@ -31,7 +31,7 @@ resource "aws_route_table" "rt-public" {
 resource "aws_route_table" "rt-priv" {
   vpc_id = aws_vpc.this.id
 
-  tags = merge(local.commom_tags,{
+  tags = merge(local.commom_tags, {
     Name = "Private-Route-Table-Terraform"
   })
 }
@@ -39,35 +39,35 @@ resource "aws_route_table" "rt-priv" {
 
 # Subnet Association Public
 
-resource "aws_route_table_association" "pub-1"{
-  subnet_id = aws_subnet.sub-pub-1.id
+resource "aws_route_table_association" "pub-1" {
+  subnet_id      = aws_subnet.sub-pub-1.id
   route_table_id = aws_route_table.rt-public.id
 }
 
-resource "aws_route_table_association" "pub-2"{
-  subnet_id = aws_subnet.sub-pub-2.id
+resource "aws_route_table_association" "pub-2" {
+  subnet_id      = aws_subnet.sub-pub-2.id
   route_table_id = aws_route_table.rt-public.id
 }
 
-resource "aws_route_table_association" "pub-3"{
-  subnet_id = aws_subnet.sub-pub-3.id
+resource "aws_route_table_association" "pub-3" {
+  subnet_id      = aws_subnet.sub-pub-3.id
   route_table_id = aws_route_table.rt-public.id
 }
 
 # Subnet Association private
 
-resource "aws_route_table_association" "priv-1"{
-  subnet_id = aws_subnet.sub-priv-1.id
+resource "aws_route_table_association" "priv-1" {
+  subnet_id      = aws_subnet.sub-priv-1.id
   route_table_id = aws_route_table.rt-priv.id
 }
 
-resource "aws_route_table_association" "priv-2"{
-  subnet_id = aws_subnet.sub-priv-2.id
+resource "aws_route_table_association" "priv-2" {
+  subnet_id      = aws_subnet.sub-priv-2.id
   route_table_id = aws_route_table.rt-priv.id
 }
 
-resource "aws_route_table_association" "priv-3"{
-  subnet_id = aws_subnet.sub-priv-3.id
+resource "aws_route_table_association" "priv-3" {
+  subnet_id      = aws_subnet.sub-priv-3.id
   route_table_id = aws_route_table.rt-priv.id
 }
 
