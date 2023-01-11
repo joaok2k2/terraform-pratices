@@ -41,3 +41,11 @@ variable "sub-priv-1c" {
   type    = string
   default = "10.40.160.0/19"
 }
+
+
+// Cluster ECS Settings
+
+variable "cluster-ecs-name"{
+  type = string
+  default = "visao-online"
+}
