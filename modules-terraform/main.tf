@@ -1,37 +1,41 @@
 provider "aws" {
 
-    region = var.region
-  
+  region = var.region
+
 }
 
 
-resource "random_pet" "this"{
+resource "random_pet" "this" {
 
-    length = 5
+  length = 5
 }
 
-module "bucket"{
-    source = "./s3_module"
-    name = random_pet.this.id
+module "bucket" {
+  source = "./s3_module"
+  name   = random_pet.this.id
 }
 
 
 
-resource "random_pet" "website"{
+resource "random_pet" "website" {
 
-    length = 5
+  length = 5
 }
 
-module "website"{
-    source = "./s3_module"
-    name = random_pet.website.id
-    website = {
-        index_document = "index.html"
-        error_document = "error.html"
-    }
+module "website" {
+  source = "./s3_module"
+  name   = random_pet.website.id
+  acl = "public-read"
+  files = "${path.root}/website"
+  website = {
+    index_document = "index.html"
+    error_document = "error.html"
+  }
+  versioning = {
+    enabled = true
+  }
 
-
-    policy = <<EOT
+  policy = <<EOT
     {
         "Version" : "2012-10-17",
         "Statement" :[
