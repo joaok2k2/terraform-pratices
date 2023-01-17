@@ -49,3 +49,8 @@ variable "cluster-ecs-name"{
   type = string
   default = "visao-online"
 }
+
+variable "name_group_logs"{
+  type = string
+  default = "visao_logs"
+}

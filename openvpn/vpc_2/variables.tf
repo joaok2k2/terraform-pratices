@@ -52,3 +52,4 @@ variable "sub-priv-1c" {
   type    = string
   default = "10.50.160.0/19"
 }
+
