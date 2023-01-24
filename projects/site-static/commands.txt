@@ -1,3 +1,10 @@
 #Creating react app
 
 npx create-react-app my-app
+
+
+#run changes with domain, to route53
+terraform apply -auto-approve -var="domain=bspcloudlab.com"
+
+#run sh to deploy build changes do s3
+sh ./script/deploy.sh bspcloudlab.com

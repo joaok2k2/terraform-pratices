@@ -1,6 +1,9 @@
 data "template_file" "bucket_policy" {
   template = file("policy.json")
-  vars     = { bucket_name = local.domain }
+  vars = {
+    bucket_name = local.domain
+    cdn_oai     = aws_cloudfront_origin_access_identity.origin_access_identity.id
+  }
 }
 
 module "logs" {
@@ -8,7 +11,7 @@ module "logs" {
   name          = "${local.domain}-logs"
   acl           = "log-delivery-write"
   force_destroy = !local.has_domain
-  tags = local.commom_tags
+  tags          = local.commom_tags
 }
 
 module "website" {
@@ -17,7 +20,7 @@ module "website" {
   acl           = "public-read"
   policy        = data.template_file.bucket_policy.rendered
   force_destroy = !local.has_domain
-  tags = local.commom_tags
+  tags          = local.commom_tags
 
   versioning = {
     enabled = true
@@ -40,8 +43,8 @@ module "redirect" {
   name          = "www.${local.domain}"
   acl           = "public-read"
   force_destroy = !local.has_domain
-  tags = local.commom_tags
-  
+  tags          = local.commom_tags
+
   website = {
     redirect_all_requests_to = local.has_domain ? var.domain : module.website.website
   }

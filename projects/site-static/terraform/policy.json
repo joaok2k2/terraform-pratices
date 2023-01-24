@@ -1,10 +1,12 @@
 {
-    "Version" : "2012-10-17",
+    "Version" : "2008-10-17",
     "Statement" :[
         {
             "Sid" : "PublicReadGetObject",
             "Effect" : "Allow",
-            "Principal" : "*",
+            "Principal" :{
+                "AWS" : "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${cdn_oai}"
+            },
             "Action":[
                 "s3:GetObject"
             ],
@@ -14,3 +16,4 @@
         }
     ]
 }
+
