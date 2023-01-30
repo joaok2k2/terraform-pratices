@@ -15,4 +15,9 @@ variable "service_domain" {
   default = "api-todos"
 }
 
+variable "aws_account_id" {
+  type        = number
+  description = ""
+  default     = 431591413306
+}
 

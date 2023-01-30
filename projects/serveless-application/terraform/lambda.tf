@@ -39,7 +39,24 @@ resource "aws_lambda_function" "s3" {
   source_code_hash = data.archive_file.s3.output_base64sha256
 
   layers = [aws_lambda_layer_version.joi.arn]
-  tags   = local.commom_tags
+
+  environment {
+    variables = {
+      TOPIC_ARN = aws_sns_topic.this.arn
+    }
+  }
+  tags = local.commom_tags
+
+}
+
+
+resource "aws_lambda_permission" "s3" {
+  statement_id  = "AllowExecutionFromS3Bucket"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.s3.arn
+  principal     = "s3.amazonaws.com"
+  source_arn    = aws_s3_bucket.todo.arn
+
 }
 resource "aws_lambda_function" "dynamo" {
 
@@ -59,4 +76,24 @@ resource "aws_lambda_function" "dynamo" {
     }
   }
   tags = local.commom_tags
+}
+
+
+data "aws_caller_identity" "this" {}
+
+resource "aws_lambda_permission" "dynamo" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.dynamo.arn
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "arn:aws:execute-api:${var.region}:${data.aws_caller_identity.this.account_id}:*/*"
+
+}
+resource "aws_lambda_permission" "sns" {
+  statement_id  = "AllowExecutionFromSNS"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.dynamo.arn
+  principal     = "sns.amazonaws.com"
+  source_arn    = aws_sns_topic.this.arn
+
 }
