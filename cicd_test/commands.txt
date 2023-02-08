@@ -1,0 +1,21 @@
+
+npm run build && npm run db:migrate
+npx sequelize-cli db:seed:all
+psql -U postgres -h localhost postgres
+
+sudo netstat -tlpn
+sudo kill pid $(lsof -t -i:8080)
+
+cd /etc/nginx/sites-available
+systemctl enable nginx
+service nginx status
+sudo service nginx start
+
+dockerbuild-
+sudo docker build -t fargate-nodejs-app .
+
+dockerlogin-
+docker login -u AWS -p $(aws ecr get-login-password --region us-west-2) 431591413306.dkr.ecr.us-west-2.amazonaws.com 
+
+dockerpush=
+sudo docker push 431591413306.dkr.ecr.us-west-2.amazonaws.com/fargate-nodejs-app:latest 

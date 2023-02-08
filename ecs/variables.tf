@@ -47,5 +47,5 @@ variable "sub-priv-1c" {
 
 variable "cluster-ecs-name"{
   type = string
-  default = "visao-online"
+  default = "teste-ci-cd"
 }
