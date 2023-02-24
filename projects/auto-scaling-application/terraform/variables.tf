@@ -7,3 +7,9 @@ variable "service_name" {
   type    = string
   default = "autoscaling-app"
 }
+
+variable "instance_type" {
+  type    = string
+  default = "t3.micro"
+}
+

@@ -27,10 +27,18 @@ output "route_table_association_ids" {
   value = [for k, v in aws_route_table_association.this : v.id]
 }
 
-output "sg_web_id"{
+output "sg_web_id" {
   value = aws_security_group.web.id
 }
 
-output "sg_db_id"{
+output "sg_db_id" {
   value = aws_security_group.db.id
+}
+
+output "sg_alb" {
+  value = aws_security_group.aws_alb.id
+}
+
+output "alb_id" {
+  value = aws_lb.this.id
 }

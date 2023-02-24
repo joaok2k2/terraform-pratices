@@ -51,7 +51,7 @@ resource "aws_route_table" "private" {
   vpc_id = aws_vpc.this.id
 
 
-  tags = merge(local.common_tags, { Name = "Terraform Public" })
+  tags = merge(local.common_tags, { Name = "Terraform Private" })
 }
 
 resource "aws_route_table_association" "this" {
