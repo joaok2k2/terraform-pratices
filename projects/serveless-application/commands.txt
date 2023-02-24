@@ -1,0 +1,3 @@
+#to get token from cognito
+
+#aws cognito-idp admin-initiate-auth  --region "" --cli-input-json file://login.json --output json > saida.json 
