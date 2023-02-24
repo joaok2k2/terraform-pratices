@@ -73,6 +73,20 @@ resource "aws_route_table_association" "priv-3" {
 
 
 
+# Peering VPC
 
 
+data "aws_vpc" "this"{
+  cidr_block = "10.50.0.0/16"
+}
+resource "aws_vpc_peering_connection" "this" {
+  # VPC B
+  peer_vpc_id   = data.aws_vpc.this.id
+  # VPC A
+  vpc_id        = aws_vpc.this.id
+  auto_accept   = true
 
+  tags = {
+    Name = "OpenVPN peering testing"
+  }
+}
